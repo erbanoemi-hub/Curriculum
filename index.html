@@ -15,12 +15,15 @@
 
         html, body {
             margin: 0;
-            width: 100%;
-            min-height: 100%;
+            height: 100%;
         }
 
         body {
             background-color: #96bef2;
+            display: flex;
+            align-items: center;      /* centra in verticale */
+            justify-content: center;  /* centra in orizzontale */
+            overflow: hidden;
         }
 
         /* contenitore: l'immagine fa da layout, il resto si posiziona sopra in percentuale */
@@ -29,6 +32,8 @@
             width: 100%;
             max-width: 1920px;
             margin: 0 auto;
+            container-type: inline-size; /* permette di usare cqw per il testo */
+            flex: none;
         }
 
         .pagina img {
@@ -47,7 +52,7 @@
 
             overflow-y: auto;
             padding: 0.5em 0.8em;
-            font-size: clamp(11px, 1.15vw, 20px);
+            font-size: clamp(10px, 1.15cqw, 24px);
             line-height: 1.5;
             color: #2b2118;
 
@@ -126,6 +131,18 @@
     <script>
         const USER = "erbanoemi-hub";
         const box = document.getElementById("progetti");
+        const pagina = document.querySelector(".pagina");
+        const img = pagina.querySelector("img");
+
+        function adatta() {
+            const rapporto = img.naturalWidth / img.naturalHeight;
+            const larghezza = Math.min(window.innerWidth, window.innerHeight * rapporto);
+            pagina.style.width = larghezza + "px";
+        }
+
+        if (img.complete) adatta();
+        img.addEventListener("load", adatta);
+        window.addEventListener("resize", adatta);
 
         fetch(`https://api.github.com/users/${USER}/repos?per_page=100&sort=updated`)
             .then(r => {
