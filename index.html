@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="it">
 
@@ -21,24 +20,130 @@
         }
 
         body {
-            min-height: 100vh;
-
-            background-image: url("sfondo.png");
-            background-size: contain;
             background-color: #96bef2;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
+        }
+
+        /* contenitore: l'immagine fa da layout, il resto si posiziona sopra in percentuale */
+        .pagina {
+            position: relative;
+            width: 100%;
+            max-width: 1920px;
+            margin: 0 auto;
+        }
+
+        .pagina img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        /* box scorrevole sul foglio di sinistra: aggiusta left/top/width/height a mano */
+        .progetti {
+            position: absolute;
+            left: 47%;
+            top: 26%;
+            width: 22%;
+            height: 60%;
+
+            overflow-y: auto;
+            padding: 0.5em 0.8em;
+            font-size: clamp(11px, 1.15vw, 20px);
+            line-height: 1.5;
+            color: #2b2118;
+
+            scrollbar-width: thin;
+            scrollbar-color: #8a6f4d transparent;
+
+            /* decommenta per vedere il box mentre lo posizioni */
+            /* outline: 2px solid red; */
+        }
+
+        .progetti .stato {
+            margin: 0;
+            font-style: italic;
+        }
+
+        .progetto {
+            display: block;
+            padding: 0.4em 0 0.5em;
+            border-bottom: 1px solid rgba(80, 60, 40, 0.35);
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .progetto:hover {
+            background: rgba(255, 255, 255, 0.35);
+        }
+
+        .progetto h3 {
+            margin: 0;
+            font-size: 1.15em;
+            text-decoration: underline;
+        }
+
+        .progetto p {
+            margin: 0.15em 0 0;
+        }
+
+        .progetto small {
+            opacity: 0.7;
         }
     </style>
 
 </head>
 
 <body>
-    <h1>myBlog</h1>
-    <p>Benvenuto nel mio blog personale.</p>
+    <div class="pagina">
+        <img src="sfondo.png" alt="">
+
+        <div class="progetti" id="progetti">
+            <p class="stato">Caricamento…</p>
+        </div>
+    </div>
+
+    <script>
+        const USER = "erbanoemi-hub";
+        const box = document.getElementById("progetti");
+
+        fetch(`https://api.github.com/users/${USER}/repos?per_page=100&sort=updated`)
+            .then(r => {
+                if (!r.ok) throw new Error(r.status);
+                return r.json();
+            })
+            .then(repos => {
+                const visibili = repos.filter(r => !r.fork);
+                if (!visibili.length) {
+                    box.innerHTML = '<p class="stato">Nessun progetto.</p>';
+                    return;
+                }
+                box.innerHTML = "";
+                visibili.forEach(r => {
+                    const a = document.createElement("a");
+                    a.className = "progetto";
+                    a.href = r.html_url;
+                    a.target = "_blank";
+                    a.rel = "noopener";
+
+                    const titolo = document.createElement("h3");
+                    titolo.textContent = r.name;
+                    a.appendChild(titolo);
+
+                    if (r.description) {
+                        const d = document.createElement("p");
+                        d.textContent = r.description;
+                        a.appendChild(d);
+                    }
+
+                    const info = document.createElement("small");
+                    info.textContent = r.language || "";
+                    a.appendChild(info);
+
+                    box.appendChild(a);
+                });
+            })
+            .catch(() => {
+                box.innerHTML = '<p class="stato">Impossibile caricare i progetti.</p>';
+            });
+    </script>
 </body>
 </html>
-
-
-
