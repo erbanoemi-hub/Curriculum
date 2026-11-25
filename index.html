@@ -85,6 +85,21 @@
         .progetto small {
             opacity: 0.7;
         }
+
+        .hotspot {
+            position: absolute;
+            display: block;
+            /* decommenta per vedere le aree mentre le posizioni */
+            /* outline: 2px solid red; */
+        }
+
+        .hotspot:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .hotspot:focus-visible {
+            outline: 2px solid #2b2118;
+        }
     </style>
 
 </head>
@@ -96,6 +111,16 @@
         <div class="progetti" id="progetti">
             <p class="stato">Caricamento…</p>
         </div>
+
+        <a class="hotspot" style="left: 16.5%; top: 43%; width: 10.5%; height: 5%;"
+        href="LINK-1" aria-label="it goes here"></a>
+
+        <a class="hotspot" style="left: 5.4%; top: 76%; width: 17.3%; height: 5%;"
+        href="LINK-2" aria-label="music of the month"></a>
+
+        <a class="hotspot" style="left: 48%; top: 87%; width: 10.5%; height: 5%;"
+        href="LINK-3" aria-label="curriculum"></a>
+
     </div>
 
     <script>
