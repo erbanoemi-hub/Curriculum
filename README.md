@@ -1,7 +1,7 @@
 # Curriculum
 Il mio curriculum online, con una sezione progetti e un blog personale.
 
-🔗 **Vedi il sito:** https://erbanoemi-hub.github.io/Curriculum/
+🔗 **Vedi il sito:** https://erbanoemi-hub.github.io/CurriculumWeb/
 
 ## Contenuto
 
